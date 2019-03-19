@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    
+    <head>
+        <title>字符替换 - PS字幕用</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdnjs.loli.net/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    </head>
+    
+    <body>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+
+                            </button> <a class="navbar-brand" href="#">在线工具</a>
+
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="active"> <a href="#">PS字幕字符替换</a>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div class="row clearfix">
+                        <div class="col-md-5 column">
+                            <div class="form-group">
+                                <label for="t1">需要替换的内容</label>
+                                <textarea class="form-control" rows="3" id="t1" style="height:300px"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-2 column">
+                             <h4>操作</h4>
+
+                            <div class="btn-group btn-group-lg btn-group-vertical" id="btns">
+                                <button class="btn btn-success" type="button" id="rep"><em class="glyphicon glyphicon-retweet"></em> 转换  </button>
+                                <button class="btn btn-danger" type="button" id="clr"><em class="glyphicon glyphicon-remove-circle"></em> 清除  </button>
+                                <button class="btn btn-info" type="button"> </button>
+                                <button class="btn btn-default" type="button" id="copy" data-clipboard-target="#t2"><em class="glyphicon glyphicon-pencil"></em> 复制  </button>
+                                
+                            </div>
+                            <h4>tips</h4>
+                            <div id="copyinfo" class="alert alert-warning" style="display:none"> <a href="#" class="close" data-dismiss="alert"> &times;</a>
+                                    <strong>已复制</strong>
+                                </div>
+                        </div>
+                        <div class="col-md-5 column">
+                            <div class="form-group">
+                                <label for="t2">替换后的内容</label>
+                                <textarea class="form-control" rows="3" id="t2" style="height:300px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        //需要匹配的符号正则数组
+        var rep_arr = [
+            {
+                "str1": "\，",
+                "str2": "\n"
+            },
+            {
+                "str1": "。",
+                "str2": "\n"
+            },
+            {
+                "str1": "、",
+                "str2": " "
+            },
+            
+            {
+                "str1": "（",
+                "str2": " "
+            },
+            {
+                "str1": "）",
+                "str2": " "
+            },
+            {
+                "str1": "\,",
+                "str2": "\n"
+            },
+            {
+                "str1": "\\.",
+                "str2": "\n"
+            },
+            {
+                "str1": "\“",
+                "str2": " "
+            },
+            {
+                "str1": "\”",
+                "str2": " "
+            },
+            {
+                "str1": "\‘",
+                "str2": " "
+            },
+            {
+                "str1": "\’",
+                "str2": " "
+            },
+            {
+                "str1": "\：",
+                "str2": " "
+            },
+            {
+                "str1": "\；",
+                "str2": " "
+            },
+            {
+                "str1": "\"",
+                "str2": " "
+            },
+            {
+                "str1": "\'",
+                "str2": " "
+            }
+
+        ];
+        var data = '';
+         //初始化复制组件
+        var clipboard = new ClipboardJS('#copy');
+         //替换
+
+        function rep() {
+            //获取数据
+            data = $('#t1').val();
+            //循环替换
+            for (var i = 0; i < rep_arr.length; i++) {
+                //创建正则RegExp对象
+                var reg = new RegExp(rep_arr[i].str1, "g");
+                //替换符号
+                data = data.replace(reg, rep_arr[i].str2);
+            }
+            //替换过多的回车
+            data = data.replace(/\n\n/g, "\n");
+            data = "zm\n"+data;
+            //在文本框写入结果
+            $('#t2').val(data);
+        }
+
+        $('#rep').click(function () {
+            rep();
+        });
+        $('#clr').click(function () {
+            $('#t1').val('');
+            $('#t2').val('');
+        });
+
+        clipboard.on('success', function (e) {
+            $('#copyinfo').show('slow');
+            setTimeout(function () {
+                $('#copyinfo').hide('slow');
+            }, 3000);
+        });
+        </script>
+    </body>
+
+</html>
